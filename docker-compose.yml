@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # редирект с 80 на 443 
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      # ACME
+      - "--certificatesresolvers.le.acme.email=shuv1wolf@gmail.com"
+      - "--certificatesresolvers.le.acme.storage=/acme.json"
+      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+      # staging-сервер для тестов 
+      # - "--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./traefik/traefik.yml:/traefik.yml:ro
+      - ./traefik/acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks: [web]
+
+  app1:
+    build: ./app1
+    container_name: app1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app1.rule=Host(`app1.shuv1wolf.ru`)"
+      - "traefik.http.routers.app1.entrypoints=websecure"
+      - "traefik.http.routers.app1.tls.certresolver=le"
+      - "traefik.http.services.app1.loadbalancer.server.port=8000"
+    networks:
+      - web
+    restart: unless-stopped
+
+  app2:
+    build: ./app2
+    container_name: app2
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app2.rule=Host(`app2.shuv1wolf.ru`)"
+      - "traefik.http.routers.app2.entrypoints=websecure"
+      - "traefik.http.routers.app2.tls.certresolver=le"
+      - "traefik.http.services.app2.loadbalancer.server.port=8000"
+    networks:
+      - web
+    restart: unless-stopped
+
+  app3:
+    build: ./app3
+    container_name: app3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app3.rule=Host(`app3.shuv1wolf.ru`)"
+      - "traefik.http.routers.app3.entrypoints=websecure"
+      - "traefik.http.routers.app3.tls.certresolver=le"
+      - "traefik.http.services.app3.loadbalancer.server.port=8000"
+    networks:
+      - web
+    restart: unless-stopped
+
+networks:
+  web:
+    driver: bridge

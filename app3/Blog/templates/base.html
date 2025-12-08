@@ -1,0 +1,117 @@
+{% load bootstrap4 %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Блог</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="{% url 'blogs:index' %}">
+                📝 Блог
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blogs:index' %}">
+                            📄 Записи
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <span class="navbar-text text-light mr-3">
+                                👋 Привет, <strong>{{ user.username }}</strong>
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-outline-light btn-sm" href="{% url 'users:logout' %}">
+                                🔓 Выйти
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item mr-2">
+                            <a class="nav-link btn btn-success btn-sm" href="{% url 'users:register' %}">
+                                📝 Зарегистрироваться
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-outline-light btn-sm" href="{% url 'users:login' %}">
+                                🔑 Войти
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main role="main" class="container">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                {% block page_header %}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="h3 mb-0 text-primary">{% block page_title %}{% endblock %}</h1>
+                        {% block page_actions %}{% endblock %}
+                    </div>
+                {% endblock page_header %}
+
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-5 py-3 bg-light border-top">
+        <div class="container text-center text-muted">
+            <small>© {% now "Y" %} Блог. Все права защищены.</small>
+        </div>
+    </footer>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        main.container {
+            flex: 1;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .nav-link.btn {
+            margin-left: 5px;
+            transition: all 0.3s ease;
+        }
+        .nav-link.btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .navbar-text strong {
+            color: #fff;
+        }
+        .nav-link:not(.btn) {
+            color: rgba(255,255,255,0.9) !important;
+        }
+        .nav-link:not(.btn):hover {
+            color: #fff !important;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+    </style>
+</body>
+</html>
