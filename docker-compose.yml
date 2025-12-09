@@ -29,40 +29,40 @@ services:
     networks: [web]
 
   app1:
-    build: ./app1
-    container_name: app1
+    build: ./pract_one
+    container_name: pract_one
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app1.rule=Host(`app1.shuv1wolf.ru`)"
-      - "traefik.http.routers.app1.entrypoints=websecure"
-      - "traefik.http.routers.app1.tls.certresolver=le"
-      - "traefik.http.services.app1.loadbalancer.server.port=8000"
+      - "traefik.http.routers.pract_one.rule=Host(`pract_one.shuv1wolf.ru`)"
+      - "traefik.http.routers.pract_one.entrypoints=websecure"
+      - "traefik.http.routers.pract_one.tls.certresolver=le"
+      - "traefik.http.services.pract_one.loadbalancer.server.port=8000"
     networks:
       - web
     restart: unless-stopped
 
   app2:
-    build: ./app2
-    container_name: app2
+    build: ./pract_two
+    container_name: pract_two
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app2.rule=Host(`app2.shuv1wolf.ru`)"
-      - "traefik.http.routers.app2.entrypoints=websecure"
-      - "traefik.http.routers.app2.tls.certresolver=le"
-      - "traefik.http.services.app2.loadbalancer.server.port=8000"
+      - "traefik.http.routers.pract_two.rule=Host(`pract_two.shuv1wolf.ru`)"
+      - "traefik.http.routers.pract_two.entrypoints=websecure"
+      - "traefik.http.routers.pract_two.tls.certresolver=le"
+      - "traefik.http.services.pract_two.loadbalancer.server.port=8000"
     networks:
       - web
     restart: unless-stopped
 
   app3:
-    build: ./app3
-    container_name: app3
+    build: ./pract_three
+    container_name: pract_three
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app3.rule=Host(`app3.shuv1wolf.ru`)"
-      - "traefik.http.routers.app3.entrypoints=websecure"
-      - "traefik.http.routers.app3.tls.certresolver=le"
-      - "traefik.http.services.app3.loadbalancer.server.port=8000"
+      - "traefik.http.routers.pract_three.rule=Host(`pract_three.shuv1wolf.ru`)"
+      - "traefik.http.routers.pract_three.entrypoints=websecure"
+      - "traefik.http.routers.pract_three.tls.certresolver=le"
+      - "traefik.http.services.pract_three.loadbalancer.server.port=8000"
     networks:
       - web
     restart: unless-stopped

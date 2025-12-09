@@ -17,7 +17,7 @@ Follow these instructions to set up and run the project on your local machine.
 
 ```bash
 git clone https://github.com/Shuv1Wolf/web-programming.git
-cd web-programming/app3
+cd web-programming/pract_three
 ```
 
 ### 2. Create a Virtual Environment and Install Dependencies
